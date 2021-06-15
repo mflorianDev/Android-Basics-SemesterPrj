@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NatureObserver</string>
+    <string name="helloObserver">Hello Observer</string>
+    <string name="newObservation">New Observation</string>
+    <string name="showAllObservations">Show All Observations</string>
+</resources>

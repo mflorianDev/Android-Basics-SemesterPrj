@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">NatureObserver</string>
+    <string name="helloObserver">Hallo Beobachter</string>
+    <string name="newObservation">Neue Beobachtung</string>
+    <string name="showAllObservations">Zeige alle Beobachtungen</string>
 </resources>

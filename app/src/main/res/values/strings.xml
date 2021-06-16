@@ -8,8 +8,8 @@
     <string name="newObservationDate">Datum</string>
     <string name="newObservationLocation">Ort</string>
     <string name="newObservationNotes">Anmerkungen</string>
-    <string name="newObservationSave">Speichern</string>
-    <string name="newObservationBack">Zurück</string>
+    <string name="saveBtn">Speichern</string>
+    <string name="backBtn">Zurück</string>
 
     newObservationBack
 </resources>

@@ -9,8 +9,8 @@
     <string name="newObservationDate">Date</string>
     <string name="newObservationLocation">Location</string>
     <string name="newObservationNotes">Notes</string>
-    <string name="newObservationSave">Save</string>
-    <string name="newObservationBack">Back</string>
+    <string name="saveBtn">Save</string>
+    <string name="backBtn">Back</string>
 
 
 </resources>

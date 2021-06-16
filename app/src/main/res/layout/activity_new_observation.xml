@@ -102,7 +102,7 @@
                 android:layout_height="60dp"
                 android:layout_marginTop="24dp"
                 android:backgroundTint="@color/green1"
-                android:text="@string/newObservationSave"
+                android:text="@string/saveBtn"
                 android:textColor="@color/white"
                 android:textSize="18sp"/>
         </LinearLayout>
@@ -121,7 +121,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginStart="20dp"
             android:backgroundTint="@color/grey2"
-            android:text="@string/newObservationBack"
+            android:text="@string/backBtn"
             android:textColor="@color/white"
             android:textSize="18sp"/>
 

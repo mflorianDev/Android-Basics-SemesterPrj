@@ -9,7 +9,7 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
-import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_show_all_observations.*
 import org.json.JSONObject
@@ -35,10 +35,21 @@ class ShowAllObservationsActivity : AppCompatActivity() {
             }
         }
 
+        // Create and add observation-objects to observationsObjectsList
+        var observationTestArray: ArrayList<Observation> = ArrayList()
+        observationTestArray.add(Observation("Buntspecht", "12.02.2021", "Wienerberg", "Schöner Vogel"))
+        observationTestArray.add(Observation("Braunbär", "06.02.2020", "Lungau", "Was für ein Erlebnis"))
+        observationTestArray.add(Observation("Rochen", "25.07.2020", "La Palma", "Gut getarnt"))
+        observationTestArray.add(Observation("Smaragdeidechse", "06.04.2021", "Perchtholdsdorf", "Wie die geflitzt ist"))
+        DataService.observationsObjectsList.addAll(observationTestArray)
+
         // RecyclerView
-        rvObservations.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        var observationsAdapter = rvObservationsAdapter(DataService.observationsObjectsList, this)
-        rvObservations.adapter = observationsAdapter
+        val myLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        var myAdapter = rvObservationsAdapter(DataService.observationsObjectsList, this)
+        val divider = DividerItemDecoration(this, myLayoutManager.orientation)
+        rvObservations.adapter = myAdapter
+        rvObservations.layoutManager = myLayoutManager
+        rvObservations.addItemDecoration(divider)
 
         // Store data to Shared Preferences
         var context: Context = this
@@ -60,11 +71,6 @@ class ShowAllObservationsActivity : AppCompatActivity() {
         // opt searches for matching 'name' and returns value or null
         val nameFromJson = dataJSON.optString("name")
         Log.e("JSON: ", nameFromJson)
-
-
-
-
-
 
     }
 

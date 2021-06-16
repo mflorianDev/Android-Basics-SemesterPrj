@@ -22,8 +22,8 @@ class rvObservationsAdapter (val items: ArrayList<Observation>, val context: Con
     }
 
     override fun onBindViewHolder(holder: rvObservationsAdapter.ViewHolder, position: Int) {
-        val model: Observation = items[position]
-        holder.tvItem.text = model.title.toString()
+        val observation: Observation = items[position]
+        holder.tvItem.text = observation.title
     }
 
     override fun getItemCount(): Int {

@@ -1,16 +1,22 @@
 package com.example.natureobserver
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.core.content.ContentProviderCompat.requireContext
+import org.json.JSONObject
 
 class ShowAllObservationsActivity : AppCompatActivity() {
+
+    private lateinit var mySharedPreferences: SharedPreferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_all_observations)
         Log.e("ShowAllObservationsActivity", "onCreate")
+
 
         // Store data to Shared Preferences
         var context: Context = this
@@ -25,7 +31,13 @@ class ShowAllObservationsActivity : AppCompatActivity() {
         val storedString = sharedPref.getString("greeting", "defaultValue")
         Log.e("sharedPref", storedString.toString())
 
-        storedString.
+        // simple JSON
+        var data = "{'name': 'Franz'}, {'radl': 'BMX'}"
+        // JSONObject creates an object out of a JSON-String
+        val dataJSON = JSONObject(data)
+        // opt searches for matching 'name' and returns value or null
+        val nameFromJson = dataJSON.optString("name")
+        Log.e("JSON: ", nameFromJson)
     }
 
     override fun onStart() {

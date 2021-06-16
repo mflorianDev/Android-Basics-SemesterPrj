@@ -4,4 +4,11 @@
     <string name="helloObserver">Hello Observer</string>
     <string name="newObservation">New Observation</string>
     <string name="showAllObservations">Show All Observations</string>
+
+    <string name="newObservationTitle">Title</string>
+    <string name="newObservationDate">Date</string>
+    <string name="newObservationLocation">Location</string>
+    <string name="newObservationNotes">Notes</string>
+    <string name="newObservationSave">Save</string>
+
 </resources>

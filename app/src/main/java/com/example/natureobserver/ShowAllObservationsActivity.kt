@@ -1,6 +1,7 @@
 package com.example.natureobserver
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +12,9 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_new_observation.*
 import kotlinx.android.synthetic.main.activity_show_all_observations.*
+import kotlinx.android.synthetic.main.activity_show_all_observations.newObservationBackBtn
 import org.json.JSONObject
 
 class ShowAllObservationsActivity : AppCompatActivity() {
@@ -45,11 +48,18 @@ class ShowAllObservationsActivity : AppCompatActivity() {
 
         // RecyclerView
         val myLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        var myAdapter = rvObservationsAdapter(DataService.observationsObjectsList, this)
+        var myAdapter = RvObservationAdapter(DataService.observationsObjectsList)
         val divider = DividerItemDecoration(this, myLayoutManager.orientation)
         rvObservations.adapter = myAdapter
         rvObservations.layoutManager = myLayoutManager
         rvObservations.addItemDecoration(divider)
+
+        // Return Button ClickListener
+        newObservationBackBtn.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         // Store data to Shared Preferences
         var context: Context = this

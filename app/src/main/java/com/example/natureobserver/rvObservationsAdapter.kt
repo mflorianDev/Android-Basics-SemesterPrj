@@ -1,36 +1,29 @@
 package com.example.natureobserver
 
-import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.rv_item_view.view.*
 
-class rvObservationsAdapter (val items: ArrayList<Observation>, val context: Context): RecyclerView.Adapter<rvObservationsAdapter.ViewHolder>() {
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): rvObservationsAdapter.ViewHolder {
-        return ViewHolder(
-            LayoutInflater.from(context).inflate(
-                R.layout.rv_item_view,
-                parent,
-                false
-            )
-        )
+class RvObservationAdapter(private var observations: ArrayList<Observation>): RecyclerView.Adapter<RvObservationViewHolder>() {
+    // Create your view holder here
+// This method is called as often as the count of views that fit in one screen
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RvObservationViewHolder {
+        val listItemRootView = LayoutInflater.from(parent.context).inflate(R.layout.rv_item_view, parent, false)
+        return RvObservationViewHolder(listItemRootView)
     }
-
-    override fun onBindViewHolder(holder: rvObservationsAdapter.ViewHolder, position: Int) {
-        val observation: Observation = items[position]
-        holder.tvItem.text = observation.title
+    // Bind the "plain" data object to a viewholder at the given position
+// Be sure to reset/clean out every view since there might be data which is set already
+    override fun onBindViewHolder(holder: RvObservationViewHolder, position: Int) {
+        val item = observations[position]
+        holder.rvTitle.text = item.title
+        holder.rvDate.text = item.date
+        holder.rvLocation.text = item.location
     }
-
-    override fun getItemCount(): Int {
-        return items.size
-    }
-
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
-        val tvItem = view.tvItem!!
+    // Returns the count of total items in the list
+    override fun getItemCount() = observations.size
+    // Use this to update the list and refresh the UI
+    fun updateContacts(contacts: ArrayList<Observation>) {
+        this.observations = observations
+        notifyDataSetChanged()
     }
 }

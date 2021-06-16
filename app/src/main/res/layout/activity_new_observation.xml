@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:background="@color/green2"
     tools:context=".NewObservationActivity">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:backgroundTint="@color/white"
@@ -47,7 +47,6 @@
                     android:hint="@string/newObservationTitle"
                     android:textColor="#363A43"
                     android:inputType="text"/>
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -65,7 +64,21 @@
                     android:inputType="text"
                     android:focusable="false"
                     android:focusableInTouchMode="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/newObservationLocation"
+                    android:textColor="#363A43"
+                    android:inputType="text"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -81,7 +94,6 @@
                     android:hint="@string/newObservationNotes"
                     android:inputType="textMultiLine"
                     android:gravity="start|top" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
@@ -96,5 +108,33 @@
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/newObservationBackBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginStart="20dp"
+            android:backgroundTint="@color/grey2"
+            android:text="@string/newObservationBack"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/newObservationShareBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="180dp"
+            android:layout_marginTop="40dp"
+            android:backgroundTint="@color/green1"
+            android:clickable="true"
+            android:contentDescription="Share Observation Button"
+            app:srcCompat="@android:drawable/ic_menu_share" />
+    </LinearLayout>
 
 </LinearLayout>

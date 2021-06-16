@@ -2,10 +2,16 @@ package com.example.natureobserver
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_show_all_observations.*
 import org.json.JSONObject
 
 class ShowAllObservationsActivity : AppCompatActivity() {
@@ -17,6 +23,22 @@ class ShowAllObservationsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_show_all_observations)
         Log.e("ShowAllObservationsActivity", "onCreate")
 
+        // Remove Status Bar
+        if (Build.VERSION.SDK_INT < 30) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
+        } else {
+            window.setDecorFitsSystemWindows(false)
+            val controller = window.insetsController
+            if (controller != null) {
+                controller.hide(WindowInsets.Type.statusBars())
+                controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }
+
+        // RecyclerView
+        rvObservations.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        var observationsAdapter = rvObservationsAdapter(DataService.observationsObjectsList, this)
+        rvObservations.adapter = observationsAdapter
 
         // Store data to Shared Preferences
         var context: Context = this
@@ -38,6 +60,12 @@ class ShowAllObservationsActivity : AppCompatActivity() {
         // opt searches for matching 'name' and returns value or null
         val nameFromJson = dataJSON.optString("name")
         Log.e("JSON: ", nameFromJson)
+
+
+
+
+
+
     }
 
     override fun onStart() {

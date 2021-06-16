@@ -3,9 +3,9 @@ package com.example.natureobserver
 import java.util.*
 
 
-class Observation (title: String, date: Date, location: String, notes: String) {
+class Observation(title: String, date: String, location: String, notes: String) {
     val title: String
-    val date: Date
+    val date: String
     val location: String
     val notes: String
 

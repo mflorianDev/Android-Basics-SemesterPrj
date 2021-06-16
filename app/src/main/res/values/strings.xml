@@ -9,4 +9,7 @@
     <string name="newObservationLocation">Ort</string>
     <string name="newObservationNotes">Anmerkungen</string>
     <string name="newObservationSave">Speichern</string>
+    <string name="newObservationBack">Zurück</string>
+
+    newObservationBack
 </resources>

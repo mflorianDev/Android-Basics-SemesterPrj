@@ -1,6 +1,7 @@
 package com.example.natureobserver
 
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.icu.text.SimpleDateFormat
 import android.os.Build
@@ -13,6 +14,7 @@ import android.view.WindowInsetsController
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_new_observation.*
 import java.util.*
@@ -48,7 +50,7 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
         }
         etDate.setOnClickListener(this)
 
-        // Save new observation
+        // Save new observation to DataService.observationsObjectsList
         newObservationSaveBtn.setOnClickListener {
             val observation = Observation(etTitle.text.toString(), etDate.text.toString(), etLocation.text.toString(), etNotes.text.toString())
             DataService.observationsObjectsList.add(observation)
@@ -80,7 +82,7 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
             startActivity(chooserIntent)
         }
 
-        // Intent-Filter Send: get text from incoming intent and hand over to notes-edittextview
+        // Intent-Filter Send: get text from incoming intent and hand over to notes-edittext-view
         var incomingIntentText = intent.getStringExtra(Intent.EXTRA_TEXT)
         etNotes.setText(incomingIntentText)
 
@@ -93,6 +95,15 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
         etDate.setText(sdf.format(calendar.time).toString())
     }
 
+    // Initialize observationsObjectsList from SharedPreferences
+    private fun init(){
+        val mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val observationsListJsonString = mySharedPreferences.getString(DataService.PREFERENCE_OBSERVATIONS_KEY, "")
+        if (!observationsListJsonString.isNullOrEmpty()) {
+            DataService.observationsObjectsList = Gson().fromJson(observationsListJsonString, DataService.observationsObjectsList::class.java)
+        }
+    }
+
     override fun onClick(v: View?) {
         when (v!!.id){
             R.id.etDate -> {
@@ -102,6 +113,20 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
                     calendar.get(Calendar.DAY_OF_MONTH)).show()
             }
         }
+    }
+
+    // Write DataService.observationsObjectsList to SharedPreferences
+    private fun updateSharedPreferences(){
+        // Get SharedPreferences
+        val mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
+        // Instantiate Editor for SharedPreferences
+        val editor = mySharedPreferences.edit()
+        // Convert observationsObjectsList to String
+        val observationsListAsString = Gson().toJson(DataService.observationsObjectsList)
+        // Write String to SharedPreferences
+        editor.putString(DataService.PREFERENCE_OBSERVATIONS_KEY, observationsListAsString)
+        editor.apply()
+        Log.e("DataService.observationsObjectsList", "Saved to SharedPreferences")
     }
 
     override fun onStart() {
@@ -127,6 +152,9 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         Log.e("NewObservationActivity", "onDestroy")
+
+        // Write DataService.observationsObjectsList to SharedPreferences
+        updateSharedPreferences()
     }
 
 }

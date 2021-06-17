@@ -1,7 +1,7 @@
 Blocks implentiert:
 - Base Block: Navigation über Intents
 - Block 2: RecyclerView in "ShowAllObservationsAktivity"
-- Block 4: Shared Preferences nur teilweise implentiert, siehe "DataService" und "NewObservationActivity"
+- Block 4: Shared Preferences implentiert
 - Block 6: Share-Intent und Send-Intent in "NewObservationActivity"
 
 Anmerkungen:

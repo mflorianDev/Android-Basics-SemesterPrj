@@ -6,16 +6,18 @@ import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var mySharedPreferences: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,18 +36,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Get Data from SharedPreferences, convert to jsonObject and save result to Dataservice.observations
-        mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
-        val observationsString: String? = mySharedPreferences.getString(DataService.PREFERENCE_OBSERVATIONS_KEY, "{}")
-        DataService.observations = JSONObject(observationsString)
-        var jsonObj = JSONObject()
-        jsonObj.put("name", "Peter")
-        jsonObj.put("id", 35)
-        jsonObj.put("list", "[{'person': 'Hannes'},{'person': 'Caudia'}]")
-        DataService.observations = jsonObj
-        Log.e("SharedPreferences", "loaded")
-        Log.e("Observations", DataService.observations.toString())
-
+        // Initialize observationsObjectsList from SharedPreferences/TestArray
+        initObservationsObjectsList()
 
         newObservationBtn.setOnClickListener {
             val intent = Intent(this, NewObservationActivity::class.java)
@@ -57,6 +49,46 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+
+    }
+
+    // Initialize observationsObjectsList from SharedPreferences/TestArray
+    private fun initObservationsObjectsList(){
+        Log.e("already initialized", DataService.isInitalizedObservationsObjectsList.toString())
+        val mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
+        val observationsListJsonString = mySharedPreferences.getString(DataService.PREFERENCE_OBSERVATIONS_KEY, "")
+        //TODO
+        if (observationsListJsonString.isNullOrEmpty() && !DataService.isInitalizedObservationsObjectsList) {
+            val observationTestArray = getObservationTestArray()
+            DataService.observationsObjectsList.addAll(observationTestArray)
+            //TODO
+            DataService.isInitalizedObservationsObjectsList = true
+            Log.e("DataService.observationsObjectsList", "observationTestArray assigned")
+        } else {
+            val myType = object : TypeToken<ArrayList<Observation>>() {}.type
+            DataService.observationsObjectsList = Gson().fromJson<ArrayList<Observation>>(observationsListJsonString, myType)
+            //TODO
+            DataService.isInitalizedObservationsObjectsList = true
+            Log.e("DataService.observationsObjectsList", "SharedPreference-values assigned")
+        }
+    }
+
+    // Create observation-objects and return observationTestArray
+    private fun getObservationTestArray(): ArrayList<Observation>{
+        var observationTestArray: ArrayList<Observation> = ArrayList()
+        observationTestArray.add(Observation("Buntspecht", "12.02.2021", "Wienerberg", "Schöner Vogel"))
+        observationTestArray.add(Observation("Spiegeleiqualle", "12.08.2019", "Creta", "Die schaut so lässig aus. Sie hat nur ein schwaches Nesselgift und ist für den Menschen harmlos."))
+        observationTestArray.add(Observation("Rochen", "25.07.2018", "Gran Canaria", "Gut getarnt"))
+        observationTestArray.add(Observation("Smaragdeidechse", "06.04.2021", "Perchtholdsdorf", "Wie die geflitzt ist"))
+        observationTestArray.add(Observation("Hirschkäfer", "07.05.2019", "Kahlenberg", "Wow, rießiger Käfer mit seinem Geweih"))
+        observationTestArray.add(Observation("Blindschleichen bei Paarung", "09.05.2021", "Schönwald bei Maria Gugging", "Brutal und ein bisschen verstörend der Anblick, dennoch interessant mal gesehen zu haben."))
+        observationTestArray.add(Observation("Fasan", "08.05.2021", "Leopoldsdorf", "Im hohen Gras gesichtet"))
+        observationTestArray.add(Observation("Europäische Sumpfschildkröte", "10.04.2021", "Lobau", "Bereits am Sonne tanken. Die Umgebungstemperatur der Eier bestimmt, ob sich aus diesen mehr Weibchen oder mehr Männchen entwickeln. Gefährdungsgrad: " +
+                "vom Aussterben bedroht."))
+        observationTestArray.add(Observation("Star nistet gegenüber", "25.05.2021", "Home", "Immer fleißig auf Futtersuche für die kleinen Mäuler"))
+        observationTestArray.add(Observation("Stiglitz", "16.06.2021", "Home", "So tolle Farben bei genauerer Betrachtung"))
+        return observationTestArray
     }
 
     override fun onStart() {

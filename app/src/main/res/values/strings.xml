@@ -10,6 +10,7 @@
     <string name="newObservationNotes">Anmerkungen</string>
     <string name="saveBtn">Speichern</string>
     <string name="backBtn">Zurück</string>
+    <string name="savedToast">Neuer Eintrag gespeichert</string>
 
     newObservationBack
 </resources>

@@ -6,25 +6,36 @@
     android:background="@color/green2"
     tools:context=".ShowAllObservationsActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvObservations"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="20dp"
-        android:background="@color/white">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/newObservationBackBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="60dp"
-        android:layout_below="@id/rvObservations"
-        android:layout_marginStart="20dp"
-        android:backgroundTint="@color/grey2"
-        android:text="@string/backBtn"
-        android:textColor="@color/white"
-        android:textSize="18sp"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvObservations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_above="@id/newObservationBackBtn"
+            android:background="@drawable/rv_shape" >
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/newObservationBackBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginBottom="20dp"
+            android:backgroundTint="@color/grey2"
+            android:text="@string/backBtn"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

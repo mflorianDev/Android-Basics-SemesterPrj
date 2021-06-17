@@ -11,6 +11,8 @@
     <string name="newObservationNotes">Notes</string>
     <string name="saveBtn">Save</string>
     <string name="backBtn">Back</string>
+    <string name="savedToast">new entry saved</string>
+
 
 
 </resources>

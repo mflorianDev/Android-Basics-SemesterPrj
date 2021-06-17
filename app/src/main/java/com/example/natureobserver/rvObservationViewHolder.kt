@@ -8,10 +8,12 @@ class RvObservationViewHolder (rootView: View): RecyclerView.ViewHolder(rootView
     val rvTitle: TextView
     val rvDate: TextView
     val rvLocation: TextView
+    val rvNotes: TextView
 
     init {
         rvTitle = rootView.findViewById(R.id.rvTitle)
         rvDate = rootView.findViewById(R.id.rvDate)
         rvLocation = rootView.findViewById(R.id.rvLocation)
+        rvNotes = rootView.findViewById(R.id.rvNotes)
     }
 }

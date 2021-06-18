@@ -1,6 +1,5 @@
 package com.example.natureobserver
 
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +10,6 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_show_all_observations.*
 import kotlinx.android.synthetic.main.activity_show_all_observations.newObservationBackBtn
 

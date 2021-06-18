@@ -11,17 +11,19 @@ import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
-import android.widget.TextView
 import android.widget.Toast
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_new_observation.*
 import java.util.*
 
+// class NewObservationActivity, inherits clicklistener for entire view (used for etDate-Clicklistener)
 class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
 
+    // Instantiate new Calendar for etDate-View-Element
     private var calendar = Calendar.getInstance()
+    // variable dateListener (function), defined later
     private lateinit var dateSetListener: DatePickerDialog.OnDateSetListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,15 +42,6 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
                 controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         }
-
-        // DatePicker-Listener
-        dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-            calendar.set(Calendar.YEAR, year)
-            calendar.set(Calendar.MONTH, month)
-            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-            updateDateInView()
-        }
-        etDate.setOnClickListener(this)
 
         // Save new observation to DataService.observationsObjectsList
         newObservationSaveBtn.setOnClickListener {
@@ -86,24 +79,26 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
         var incomingIntentText = intent.getStringExtra(Intent.EXTRA_TEXT)
         etNotes.setText(incomingIntentText)
 
+        // DatePicker-Listener set Date to chosen Date and update View in etDate when date selected
+        dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            calendar.set(Calendar.YEAR, year)
+            calendar.set(Calendar.MONTH, month)
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+            updateDateInView()
+        }
+
+        // Set Clicklistener for etDate-Textview, inherits ViewClicklistener from main view (class NewObservationActivity)
+        etDate.setOnClickListener(this)
     }
 
-    // Set text in view for date in specified format
+    // Set text in view for etDate in specified format
     private fun updateDateInView(){
         val myFormat = "dd.MM.yyyy"
         val sdf = SimpleDateFormat(myFormat, Locale.getDefault())
         etDate.setText(sdf.format(calendar.time).toString())
     }
 
-    // Initialize observationsObjectsList from SharedPreferences
-    private fun init(){
-        val mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
-        val observationsListJsonString = mySharedPreferences.getString(DataService.PREFERENCE_OBSERVATIONS_KEY, "")
-        if (!observationsListJsonString.isNullOrEmpty()) {
-            DataService.observationsObjectsList = Gson().fromJson(observationsListJsonString, DataService.observationsObjectsList::class.java)
-        }
-    }
-
+    // If clicked view is etDate start a DatePickerDialog
     override fun onClick(v: View?) {
         when (v!!.id){
             R.id.etDate -> {

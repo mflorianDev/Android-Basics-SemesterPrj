@@ -2,11 +2,9 @@ package com.example.natureobserver
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.util.Log
 import android.view.View
 import android.view.WindowInsets
@@ -14,7 +12,6 @@ import android.view.WindowInsetsController
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONObject
 
 class MainActivity : AppCompatActivity() {
 
@@ -39,38 +36,39 @@ class MainActivity : AppCompatActivity() {
         // Initialize observationsObjectsList from SharedPreferences/TestArray
         initObservationsObjectsList()
 
+        // Navigation to NewObservationActivity
         newObservationBtn.setOnClickListener {
             val intent = Intent(this, NewObservationActivity::class.java)
             startActivity(intent)
             finish()
         }
+
+        // Navigation to ShowAllObservationsActivity
         showAllObservationsBtn.setOnClickListener {
             val intent = Intent(this, ShowAllObservationsActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-
     }
 
     // Initialize observationsObjectsList from SharedPreferences/TestArray
     private fun initObservationsObjectsList(){
-        Log.e("already initialized", DataService.isInitalizedObservationsObjectsList.toString())
-        val mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
-        val observationsListJsonString = mySharedPreferences.getString(DataService.PREFERENCE_OBSERVATIONS_KEY, "")
-        //TODO
-        if (observationsListJsonString.isNullOrEmpty() && !DataService.isInitalizedObservationsObjectsList) {
-            val observationTestArray = getObservationTestArray()
-            DataService.observationsObjectsList.addAll(observationTestArray)
-            //TODO
-            DataService.isInitalizedObservationsObjectsList = true
-            Log.e("DataService.observationsObjectsList", "observationTestArray assigned")
-        } else {
-            val myType = object : TypeToken<ArrayList<Observation>>() {}.type
-            DataService.observationsObjectsList = Gson().fromJson<ArrayList<Observation>>(observationsListJsonString, myType)
-            //TODO
-            DataService.isInitalizedObservationsObjectsList = true
-            Log.e("DataService.observationsObjectsList", "SharedPreference-values assigned")
+        if (DataService.isInitalizedObservationsObjectsList == false){
+            Log.e("already initialized", DataService.isInitalizedObservationsObjectsList.toString())
+            val mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
+            val observationsListJsonString = mySharedPreferences.getString(DataService.PREFERENCE_OBSERVATIONS_KEY, "")
+            if (observationsListJsonString.isNullOrEmpty()) {   // Initialize with Testarray
+                val observationTestArray = getObservationTestArray()
+                DataService.observationsObjectsList.addAll(observationTestArray)
+                DataService.isInitalizedObservationsObjectsList = true
+                Log.e("DataService.observationsObjectsList", "observationTestArray assigned")
+            } else {    // Initialize with SharedPreferences
+                val myType = object : TypeToken<ArrayList<Observation>>() {}.type
+                DataService.observationsObjectsList = Gson().fromJson<ArrayList<Observation>>(observationsListJsonString, myType)
+                DataService.isInitalizedObservationsObjectsList = true
+                Log.e("DataService.observationsObjectsList", "SharedPreference-values assigned")
+            }
         }
     }
 

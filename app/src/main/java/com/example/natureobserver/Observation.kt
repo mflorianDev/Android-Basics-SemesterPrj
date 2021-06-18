@@ -1,8 +1,5 @@
 package com.example.natureobserver
 
-import java.util.*
-
-
 class Observation(title: String, date: String, location: String, notes: String) {
     val title: String
     val date: String

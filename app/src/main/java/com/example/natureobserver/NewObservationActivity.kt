@@ -3,6 +3,7 @@ package com.example.natureobserver
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.icu.text.SimpleDateFormat
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -12,15 +13,14 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.widget.Toast
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_new_observation.*
 import java.util.*
 
 // class NewObservationActivity, inherits clicklistener for entire view (used for etDate-Clicklistener)
 class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
-
+    // variable mySharedPreferences, defined later
+    private lateinit var mySharedPreferences: SharedPreferences
     // Instantiate new Calendar for etDate-View-Element
     private var calendar = Calendar.getInstance()
     // variable dateListener (function), defined later
@@ -42,6 +42,9 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
                 controller.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
             }
         }
+
+        // Initialize mySharedPreferences from SharedPreferences
+        mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
 
         // Save new observation to DataService.observationsObjectsList
         newObservationSaveBtn.setOnClickListener {
@@ -77,7 +80,10 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
 
         // Intent-Filter Send: get text from incoming intent and hand over to notes-edittext-view
         var incomingIntentText = intent.getStringExtra(Intent.EXTRA_TEXT)
-        etNotes.setText(incomingIntentText)
+        if (incomingIntentText != null){
+            DataService.initObservationsObjectsList(mySharedPreferences)
+            etNotes.setText(incomingIntentText)
+        }
 
         // DatePicker-Listener set Date to chosen Date and update View in etDate when date selected
         dateSetListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -110,20 +116,6 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    // Write DataService.observationsObjectsList to SharedPreferences
-    private fun updateSharedPreferences(){
-        // Get SharedPreferences
-        val mySharedPreferences = getSharedPreferences(DataService.PREFERENCE_NAME, Context.MODE_PRIVATE)
-        // Instantiate Editor for SharedPreferences
-        val editor = mySharedPreferences.edit()
-        // Convert observationsObjectsList to String
-        val observationsListAsString = Gson().toJson(DataService.observationsObjectsList)
-        // Write String to SharedPreferences
-        editor.putString(DataService.PREFERENCE_OBSERVATIONS_KEY, observationsListAsString)
-        editor.apply()
-        Log.e("DataService.observationsObjectsList", "Saved to SharedPreferences")
-    }
-
     override fun onStart() {
         super.onStart()
         Log.e("NewObservationActivity", "onStart")
@@ -149,7 +141,7 @@ class NewObservationActivity : AppCompatActivity(), View.OnClickListener {
         Log.e("NewObservationActivity", "onDestroy")
 
         // Write DataService.observationsObjectsList to SharedPreferences
-        updateSharedPreferences()
+        DataService.updateSharedPreferences(mySharedPreferences)
     }
 
 }

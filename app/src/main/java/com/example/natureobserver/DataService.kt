@@ -1,6 +1,5 @@
 package com.example.natureobserver
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import com.google.gson.Gson
@@ -10,11 +9,11 @@ object DataService {
     // Constant for SharedPreference-Name
     const val PREFERENCE_NAME = "ObservationsPreference"
     // Constant key where observationsObjectsList is stored in SharedPreference
-    const val PREFERENCE_OBSERVATIONS_KEY = "observations"
+    private const val PREFERENCE_OBSERVATIONS_KEY = "observations"
     // ArrayList of Type Observation-Class holding all observations at runtime
     var observationsObjectsList: ArrayList<Observation> = ArrayList()
     // Variable to check if observationsObjectsList was already initialized
-    var isInitalizedObservationsObjectsList = false
+    private var isInitializedObservationsObjectsList = false
 
     // Type Definition for conversion from JSON to ArrayList<Observation> with GSON
     // EXAMPLE: Gson().fromJson<ArrayList<Observation>>(myJsonString, myType)
@@ -22,27 +21,27 @@ object DataService {
 
 
     // Initialize observationsObjectsList from SharedPreferences/TestArray
-    private fun initObservationsObjectsList(mySharedPreferences: SharedPreferences){
-        if (isInitalizedObservationsObjectsList == false){
-            Log.e("already initialized", isInitalizedObservationsObjectsList.toString())
+    fun initObservationsObjectsList(mySharedPreferences: SharedPreferences){
+        if (isInitializedObservationsObjectsList == false){
+            Log.e("already initialized", isInitializedObservationsObjectsList.toString())
             val mySharedPreferences = mySharedPreferences
             val observationsListJsonString = mySharedPreferences.getString(PREFERENCE_OBSERVATIONS_KEY, "")
             if (observationsListJsonString.isNullOrEmpty()) {   // Initialize with Testarray
                 val observationTestArray = getObservationTestArray()
                 observationsObjectsList.addAll(observationTestArray)
-                isInitalizedObservationsObjectsList = true
+                isInitializedObservationsObjectsList = true
                 Log.e("DataService.observationsObjectsList", "observationTestArray assigned")
             } else {    // Initialize with SharedPreferences
                 val myType = object : TypeToken<ArrayList<Observation>>() {}.type
                 observationsObjectsList = Gson().fromJson<ArrayList<Observation>>(observationsListJsonString, myType)
-                isInitalizedObservationsObjectsList = true
+                isInitializedObservationsObjectsList = true
                 Log.e("DataService.observationsObjectsList", "SharedPreference-values assigned")
             }
         }
     }
 
     // Create observation-objects and return observationTestArray
-    private fun getObservationTestArray(): ArrayList<Observation>{
+    fun getObservationTestArray(): ArrayList<Observation>{
         var observationTestArray: ArrayList<Observation> = ArrayList()
         observationTestArray.add(Observation("Buntspecht", "12.02.2021", "Wienerberg", "Schöner Vogel"))
         observationTestArray.add(Observation("Spiegeleiqualle", "12.08.2019", "Creta", "Die schaut so lässig aus. Sie hat nur ein schwaches Nesselgift und ist für den Menschen harmlos."))
@@ -59,7 +58,7 @@ object DataService {
     }
 
     // Write DataService.observationsObjectsList to SharedPreferences
-    private fun updateSharedPreferences(mySharedPreferences: SharedPreferences){
+    fun updateSharedPreferences(mySharedPreferences: SharedPreferences){
         // Get SharedPreferences
         val mySharedPreferences = mySharedPreferences
         // Instantiate Editor for SharedPreferences

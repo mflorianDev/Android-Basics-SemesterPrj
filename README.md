@@ -1,4 +1,4 @@
-# Android-Basics - Semesterprojekt
+# Android Basics - Semesterprojekt
 
 ### Konzept und Implementierung
 Nachdem das Topic frei wählbar war (siehe Exercise Overview), war meine Idee eine ***Nature-Observer-App*** zu entwickeln, in welcher interessante Outdoor-Erlebnisse mit Titel, Datum, Ort und Anmerkungen gespeichert (SharedPreferences) werden können.
